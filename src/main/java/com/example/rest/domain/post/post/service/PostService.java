@@ -34,7 +34,7 @@ public class PostService {
         return postRepository.count();
     }
 
-    public void delete(long id) {
-        postRepository.deleteById(id);
+    public void delete(Post post) {
+        postRepository.delete(post);
     }
 }

@@ -26,7 +26,7 @@ public class ApiV1PostController {
                 .map(PostDto::new)
                 .toList();
 
-        return new RsData(
+        return new RsData<>(
                 "200-1",
                 "글 전체 조회가 완료되었습니다.",
                 postDtos
@@ -34,12 +34,11 @@ public class ApiV1PostController {
 
     }
 
-
     @GetMapping("{id}")
     public RsData getItem(@PathVariable long id) {
         Post post = postService.getItem(id).get();
 
-        return new RsData(
+        return new RsData<>(
                 "200-1",
                 "글 조회가 완료되었습니다.",
                 new PostDto(post)

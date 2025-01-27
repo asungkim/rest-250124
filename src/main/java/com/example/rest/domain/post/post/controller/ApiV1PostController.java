@@ -10,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/posts")
@@ -53,8 +55,7 @@ public class ApiV1PostController {
 
         return new RsData<>(
                 "200-1",
-                "%d번 글 삭제가 완료되었습니다.".formatted(id),
-                null
+                "%d번 글 삭제가 완료되었습니다.".formatted(id)
         );
     }
 
@@ -71,8 +72,7 @@ public class ApiV1PostController {
 
         return new RsData<>(
                 "200-1",
-                "%d번 글 수정이 완료되었습니다.".formatted(id),
-                null
+                "%d번 글 수정이 완료되었습니다.".formatted(id)
         );
     }
 
@@ -83,13 +83,17 @@ public class ApiV1PostController {
                         String content) {}
 
     @PostMapping
-    public RsData<Long> write(@RequestBody @Valid WriteReqBody body) {
+    public RsData<Map<String,Object>> write(@RequestBody @Valid WriteReqBody body) {
         Post post = postService.write(body.title(), body.content());
+
+        Map<String,Object> dataMap=new HashMap<>();
+        dataMap.put("id",post.getId());
+        dataMap.put("totalCount",30);
 
         return new RsData<>(
                 "200-1",
                 "글 작성이 완료되었습니다.",
-                post.getId());
+                dataMap);
     }
 
 }

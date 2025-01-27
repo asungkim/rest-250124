@@ -20,18 +20,30 @@ public class ApiV1PostController {
 
 
     @GetMapping
-    public List<PostDto> getItems() {
+    public RsData getItems() {
         List<Post> posts = postService.getItems();
-        return posts.stream()
+        List<PostDto> postDtos = posts.stream()
                 .map(PostDto::new)
                 .toList();
+
+        return new RsData(
+                "200-1",
+                "글 전체 조회가 완료되었습니다.",
+                postDtos
+        );
+
     }
 
 
     @GetMapping("{id}")
-    public PostDto getItem(@PathVariable long id) {
+    public RsData getItem(@PathVariable long id) {
         Post post = postService.getItem(id).get();
-        return new PostDto(post);
+
+        return new RsData(
+                "200-1",
+                "글 조회가 완료되었습니다.",
+                new PostDto(post)
+        );
     }
 
 

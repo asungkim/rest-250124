@@ -20,8 +20,11 @@ public class ApiV1PostController {
 
 
     @GetMapping
-    public List<Post> getItems() {
-        return postService.getItems();
+    public List<PostDto> getItems() {
+        List<Post> posts = postService.getItems();
+        return posts.stream()
+                .map(PostDto::new)
+                .toList();
     }
 
 

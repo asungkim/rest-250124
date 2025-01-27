@@ -10,9 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/posts")
@@ -82,18 +80,19 @@ public class ApiV1PostController {
                         @NotBlank @Length(min = 3)
                         String content) {}
 
-    @PostMapping
-    public RsData<Map<String,Object>> write(@RequestBody @Valid WriteReqBody body) {
-        Post post = postService.write(body.title(), body.content());
+    record WriteResBody(long id,long totalCount) {}
 
-        Map<String,Object> dataMap=new HashMap<>();
-        dataMap.put("id",post.getId());
-        dataMap.put("totalCount",30);
+    @PostMapping
+    public RsData<WriteResBody> write(@RequestBody @Valid WriteReqBody body) {
+        Post post = postService.write(body.title(), body.content());
 
         return new RsData<>(
                 "200-1",
                 "글 작성이 완료되었습니다.",
-                dataMap);
+                new WriteResBody(
+                        post.getId(),
+                        postService.count()
+                ));
     }
 
 }

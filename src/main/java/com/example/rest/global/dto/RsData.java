@@ -8,10 +8,9 @@ import lombok.Getter;
 public class RsData {
     private String code;
     private String msg;
-    private long id;
+    private Long id;
 
     public RsData(String msg, String code) {
-        this.msg = msg;
-        this.code = code;
+        this(code,msg,null);
     }
 }

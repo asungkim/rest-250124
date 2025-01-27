@@ -20,7 +20,7 @@ public class ApiV1PostController {
 
 
     @GetMapping
-    public RsData getItems() {
+    public RsData<List<PostDto>> getItems() {
         List<Post> posts = postService.getItems();
         List<PostDto> postDtos = posts.stream()
                 .map(PostDto::new)
@@ -35,7 +35,7 @@ public class ApiV1PostController {
     }
 
     @GetMapping("{id}")
-    public RsData getItem(@PathVariable long id) {
+    public RsData<PostDto> getItem(@PathVariable long id) {
         Post post = postService.getItem(id).get();
 
         return new RsData<>(
@@ -79,7 +79,7 @@ public class ApiV1PostController {
                         String content) {}
 
     @PostMapping
-    public RsData write(@RequestBody @Valid WriteReqBody body) {
+    public RsData<Long> write(@RequestBody @Valid WriteReqBody body) {
         Post post = postService.write(body.title(), body.content());
 
         return new RsData(

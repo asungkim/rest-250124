@@ -63,26 +63,34 @@ public class ApiV1PostController {
     record ModifyReqBody(@NotBlank @Length(min = 3)
                          String title,
                          @NotBlank @Length(min = 3)
-                         String content) {}
+                         String content) {
+    }
 
     @PutMapping("{id}")
-    public RsData<Void> modify(@PathVariable long id, @RequestBody @Valid ModifyReqBody body) {
+    public ResponseEntity modify(@PathVariable long id, @RequestBody @Valid ModifyReqBody body) {
         Post post = postService.getItem(id).get();
-        postService.modify(post,body.title(),body.content());
+        postService.modify(post, body.title(), body.content());
 
-        return new RsData<>(
-                "200-1",
-                "%d번 글 수정이 완료되었습니다.".formatted(id)
-        );
+        return ResponseEntity
+                .noContent()
+                .build();
+
+
+//        return new RsData<>(
+//                "200-1",
+//                "%d번 글 수정이 완료되었습니다.".formatted(id)
+//        );
     }
 
 
     record WriteReqBody(@NotBlank @Length(min = 3)
                         String title,
                         @NotBlank @Length(min = 3)
-                        String content) {}
+                        String content) {
+    }
 
-    record WriteResBody(long id,long totalCount) {}
+    record WriteResBody(long id, long totalCount) {
+    }
 
     @PostMapping
     public ResponseEntity<RsData<WriteResBody>> write(@RequestBody @Valid WriteReqBody body) {

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
@@ -29,14 +30,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<RsData<Void>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 
-        String field = e.getBindingResult().getFieldError().getField();
-        String msg = e.getBindingResult().getFieldError().getDefaultMessage();
+        String msg = e.getBindingResult().getFieldErrors()
+                .stream()
+                .map(f -> f.getField() + " : " + f.getCode() + " : " + f.getDefaultMessage())
+                .sorted()
+                .collect(Collectors.joining("\n"));
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new RsData<>(
                         "400-1",
-                        field + " : " + msg
+                        msg
                 ));
     }
 }

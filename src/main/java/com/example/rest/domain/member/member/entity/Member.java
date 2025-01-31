@@ -24,4 +24,6 @@ public class Member extends BaseTime {
     @Column(length = 100)
     private String nickname;
 
+
+
 }

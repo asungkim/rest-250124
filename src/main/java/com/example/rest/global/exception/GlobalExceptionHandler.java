@@ -47,15 +47,15 @@ public class GlobalExceptionHandler {
                 ));
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<RsData<Void>> handleRunTimeException (RuntimeException e) {
+    @ExceptionHandler(ServiceException.class)
+    public ResponseEntity<RsData<Void>> handleServiceException (ServiceException e) {
 
         if (AppConfig.isNotProd()) e.printStackTrace();
 
         return ResponseEntity
-                .status(HttpStatus.CONFLICT)
+                .status(e.getStatusCode())
                 .body(new RsData<>(
-                        "409-1",
+                        e.getCode(),
                         e.getMessage()
                 ));
 

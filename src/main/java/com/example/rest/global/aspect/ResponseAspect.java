@@ -35,7 +35,7 @@ public class ResponseAspect {
             ||
             @annotation(org.springframework.web.bind.annotation.ResponseBody)
             """)
-    public Object test(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object response(ProceedingJoinPoint joinPoint) throws Throwable {
         Object rst = joinPoint.proceed();
 
         if (rst instanceof RsData rsData) {

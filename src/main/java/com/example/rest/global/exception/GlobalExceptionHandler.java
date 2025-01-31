@@ -1,5 +1,6 @@
 package com.example.rest.global.exception;
 
+import com.example.rest.global.app.AppConfig;
 import com.example.rest.global.dto.RsData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<RsData<Void>> handleNoSuchElementException(NoSuchElementException e) {
 
-        e.printStackTrace();
+        if (AppConfig.isNotProd()) e.printStackTrace();
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)

@@ -1,6 +1,5 @@
 package com.example.rest.domain.post.post.dto;
 
-import com.example.rest.domain.member.member.dto.MemberDto;
 import com.example.rest.domain.post.post.entity.Post;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -11,13 +10,14 @@ import java.time.LocalDateTime;
 public class PostDto {
 
     private final long id;
-    @JsonProperty("createAt")
+    @JsonProperty("createDateTime")
     private final LocalDateTime createdDate;
-    @JsonProperty("modifiedAt")
+    @JsonProperty("modifiedDateTime")
     private final LocalDateTime modifiedDate;
     private final String title;
     private final String content;
-    private final MemberDto author;
+    private final long authorId;
+    private final String authorName;
 
 
     public PostDto(Post post) {
@@ -26,7 +26,7 @@ public class PostDto {
         this.modifiedDate = post.getModifiedDate();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.author=new MemberDto(post.getAuthor());
-
+        this.authorId=post.getAuthor().getId();
+        this.authorName=post.getAuthor().getNickname();
     }
 }

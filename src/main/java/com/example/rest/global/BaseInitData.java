@@ -1,5 +1,6 @@
 package com.example.rest.global;
 
+import com.example.rest.domain.member.member.entity.Member;
 import com.example.rest.domain.member.member.service.MemberService;
 import com.example.rest.domain.post.post.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +25,8 @@ public class BaseInitData {
     @Bean
     public ApplicationRunner applicationRunner() {
         return args -> {
-            self.postInit();
             self.memberInit();
+            self.postInit();
         };
     }
 
@@ -34,9 +35,13 @@ public class BaseInitData {
         if (postService.count()>0) {
             return;
         }
-        postService.write("title1","content1");
-        postService.write("title2","content2");
-        postService.write("title3","content3");
+
+        Member author1 = memberService.findByUsername("user1").get();
+        Member author2 = memberService.findByUsername("user2").get();
+
+        postService.write(author1,"title1","content1");
+        postService.write(author1,"title2","content2");
+        postService.write(author2,"title3","content3");
     }
 
     @Transactional

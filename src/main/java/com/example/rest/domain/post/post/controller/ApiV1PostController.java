@@ -1,5 +1,7 @@
 package com.example.rest.domain.post.post.controller;
 
+import com.example.rest.domain.member.member.entity.Member;
+import com.example.rest.domain.member.member.service.MemberService;
 import com.example.rest.domain.post.post.dto.PostDto;
 import com.example.rest.domain.post.post.entity.Post;
 import com.example.rest.domain.post.post.service.PostService;
@@ -17,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ApiV1PostController {
     private final PostService postService;
+    private final MemberService memberService;
 
 
     @GetMapping
@@ -82,20 +85,20 @@ public class ApiV1PostController {
                         String content) {
     }
 
-    record WriteResBody(long id, long totalCount) {
-    }
+
 
     @PostMapping
-    public RsData<WriteResBody> write(@RequestBody @Valid WriteReqBody body) {
-        Post post = postService.write(body.title(), body.content());
+    public RsData<PostDto> write(@RequestBody @Valid WriteReqBody body) {
+
+        Member author = memberService.findByUsername("user3").get();
+
+        Post post = postService.write(author, body.title(), body.content());
 
         return new RsData<>(
                 "200-1",
                 "글 작성이 완료되었습니다.",
-                new WriteResBody(
-                        post.getId(),
-                        postService.count()
-                ));
+                new PostDto(post)
+                );
     }
 
 }

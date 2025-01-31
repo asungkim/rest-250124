@@ -28,13 +28,18 @@ public class ApiV1MemberController {
 
     @PostMapping("/join")
     public RsData<MemberDto> join(@RequestBody @Valid JoinReqBody body) {
+
+        memberService.findByUsername(body.username)
+                .ifPresent(m -> {
+                    throw new IllegalArgumentException("이미 사용중인 아이디입니다.");
+                });
         Member member = memberService.join(body.username, body.password, body.nickname);
 
         return new RsData<>(
                 "201-1",
                 "회원 가입이 완료되었습니다.",
                 new MemberDto(member)
-                );
+        );
     }
 
 }

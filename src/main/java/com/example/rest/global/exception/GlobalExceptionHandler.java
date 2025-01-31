@@ -47,13 +47,13 @@ public class GlobalExceptionHandler {
                 ));
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<RsData<Void>> handleIllegalArgumentException (IllegalArgumentException e) {
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<RsData<Void>> handleRunTimeException (RuntimeException e) {
 
         if (AppConfig.isNotProd()) e.printStackTrace();
 
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.CONFLICT)
                 .body(new RsData<>(
                         "409-1",
                         e.getMessage()
